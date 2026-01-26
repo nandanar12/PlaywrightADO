@@ -5,10 +5,8 @@ pool:
   name: 'self-hosted-linux'
 
 steps:
-- task: NodeTool@0
-  inputs:
-    versionSpec: '18.x'
-  displayName: 'Use Node 18'
+- script: node -v
+  displayName: 'Verify Node version'
 
 - script: npm ci
   displayName: 'Install dependencies'
