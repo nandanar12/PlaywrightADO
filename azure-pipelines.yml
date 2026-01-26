@@ -1,0 +1,43 @@
+trigger:
+- master
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+- task: NodeTool@0
+  inputs:
+    versionSpec: '18.x'
+  displayName: 'Use Node 18'
+
+- script: npm ci
+  displayName: 'Install dependencies'
+
+- script: npx playwright install --with-deps
+  displayName: 'Install browsers'
+
+- script: npx playwright test
+  displayName: 'Run tests'
+  env:
+    CI: 'true'
+    BASE_URL: $(BASE_URL)
+
+- task: PublishTestResults@2
+  inputs:
+    testResultsFormat: 'JUnit'
+    testResultsFiles: 'test-results/results.xml'
+    failTaskOnFailedTests: true
+  condition: succeededOrFailed()
+
+- task: PublishPipelineArtifact@1
+  inputs:
+    targetPath: 'playwright-report'
+    artifact: 'playwright-report'
+  condition: succeededOrFailed()
+
+# Optional: also publish raw artifacts (traces/videos/screenshots)
+- task: PublishPipelineArtifact@1
+  inputs:
+    targetPath: 'test-results'
+    artifact: 'test-results'
+  condition: succeededOrFailed()
