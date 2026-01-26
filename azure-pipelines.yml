@@ -2,7 +2,7 @@ trigger:
 - master
 
 pool:
-  vmImage: 'ubuntu-latest'
+  name: 'self-hosted-linux'
 
 steps:
 - task: NodeTool@0
@@ -13,7 +13,7 @@ steps:
 - script: npm ci
   displayName: 'Install dependencies'
 
-- script: npx playwright install --with-deps
+- script: npx playwright install
   displayName: 'Install browsers'
 
 - script: npx playwright test
