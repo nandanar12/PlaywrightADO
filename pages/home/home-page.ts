@@ -13,7 +13,7 @@ export class HomePage {
     //Navigate to the home page
     //URL is defined in .env file
     async navigateToHomePage() {
-        const baseUrl = process.env.URL;
+        const baseUrl = process.env.BASE_URL;
         if (baseUrl) {
             await this.page.goto(baseUrl);
         } else {
