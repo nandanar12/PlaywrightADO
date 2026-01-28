@@ -23,10 +23,10 @@ export class BugsFormPage extends BasePage {
         super(page);
         this.headerText = page.locator('h2');
         // Locators for the registration form fields
-        this.firstName = page.locator('#firstName');
-        this.lastName = page.locator('#lastName');
-        this.phoneNumber = page.locator('#phone');
-        this.country = page.locator('#countries_dropdown_menu');
+        this.firstName = page.getByRole('textbox', { name: 'First Name' });
+        this.lastName = page.getByRole('textbox', { name: 'Last Name' });
+        this.phoneNumber = page.getByRole('textbox', { name: 'Phone nunber*' });
+        this.country = page.getByRole('combobox', { name: 'Country' });
         this.emailAddress = page.locator('#emailAddress');
         this.password = page.locator('#password');
         this.termsAndConditions = page.locator('#exampleCheck1');
