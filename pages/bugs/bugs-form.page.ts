@@ -55,7 +55,6 @@ export class BugsFormPage extends BasePage {
     // Check the terms and conditions checkbox
     async checkTerms() {
         await expect(this.termsAndConditions).toBeDisabled();
-        // await this.termsAndConditions.check();
     }
 
     // Submit the registration form

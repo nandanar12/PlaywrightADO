@@ -1,7 +1,6 @@
 import { Locator, Page } from '@playwright/test';
 import { BasePage } from '../base/base.page';
 
-// This class represents the home page and contains methods to navigate to the registration form.
 export class HomePage extends BasePage {
     readonly registrationForm: Locator;
 
@@ -11,7 +10,6 @@ export class HomePage extends BasePage {
     }
 
     //Navigate to the home page
-    //URL is defined in .env file
     async navigateToHomePage() {
         const baseUrl = process.env.BASE_URL;
         if (baseUrl) {
