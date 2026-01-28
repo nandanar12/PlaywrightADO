@@ -1,11 +1,11 @@
 import { Page, Locator, expect } from '@playwright/test';
 import { RegisterFormDTO } from '../../models/register-form.dto';
 import { getRegistrationDetails } from '../../utils/extract-user-registration-details';
+import { BasePage } from '../base/base.page';
 
 // This class represents the registration form page and contains methods to interact with the form.
 // It includes methods to fill the form, submit it, and verify the registration response.
-export class BugsFormPage {
-    readonly page: Page;
+export class BugsFormPage extends BasePage {
     readonly headerText: Locator;
     readonly firstName: Locator;
     readonly lastName: Locator;
@@ -20,7 +20,7 @@ export class BugsFormPage {
     
 
     constructor(page: Page) {
-        this.page = page;
+        super(page);
         this.headerText = page.locator('h2');
         // Locators for the registration form fields
         this.firstName = page.locator('#firstName');
