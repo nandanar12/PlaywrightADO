@@ -1,35 +1,41 @@
 import { test } from '../../fixtures/test-fixtures';
 import { registerUsers } from '../../test-data/bugs-form.data';
 
-// Run these tests in parallel
-test.describe.parallel('User Registration Tests', () => {
-    test('Register with valid data', async ({ homePage, bugsFormPage }) => {
-        await homePage.navigateToHomePage();
-        await homePage.navigateToRegistrationPage();
+test.describe('User Registration Tests', () => {
 
-        await bugsFormPage.fillRegistrationForm(registerUsers.validUser);
-        await bugsFormPage.checkTerms();
-        await bugsFormPage.submit();
-        await bugsFormPage.verifySuccessMessage();
-    });
+  // Setup before every test
+  test.beforeEach(async ({ homePage }) => {
+    await homePage.navigateToHomePage();
+    await homePage.navigateToRegistrationPage();
+  });
 
-    test('Register without Email', async ({ homePage, bugsFormPage }) => {
-        await homePage.navigateToHomePage();
-        await homePage.navigateToRegistrationPage();
+  // Teardown after every test
+  test.afterEach(async ({ page }, testInfo) => {
+    if (testInfo.status !== testInfo.expectedStatus) {
+      const safeTitle = testInfo.title.replace(/[<>:"/\\|?*\x00-\x1F]/g, '_');
+      await page.screenshot({
+        path: `test-results/screenshots/${safeTitle}.png`,
+        fullPage: true,
+      });
+    }
+  });
 
-        await bugsFormPage.fillRegistrationForm(registerUsers.noEmail);
-        await bugsFormPage.submit();
+  test('Register with valid data', async ({ bugsFormPage }) => {
+    await bugsFormPage.fillRegistrationForm(registerUsers.validUser);
+    await bugsFormPage.checkTerms();
+    await bugsFormPage.submit();
+    await bugsFormPage.verifySuccessMessage();
+  });
 
-        await bugsFormPage.verifyEmailMissingErrorMessage();
-    });
+  test('Register without Email', async ({ bugsFormPage }) => {
+    await bugsFormPage.fillRegistrationForm(registerUsers.noEmail);
+    await bugsFormPage.submit();
+    await bugsFormPage.verifyEmailMissingErrorMessage();
+  });
 
-
-    test('Register without Password', async ({ homePage, bugsFormPage }) => {
-        await homePage.navigateToHomePage();
-        await homePage.navigateToRegistrationPage();
-
-        await bugsFormPage.fillRegistrationForm(registerUsers.noEmail);
-        await bugsFormPage.submit();
-        await bugsFormPage.verifyPasswordMissingErrorMessage();
-    });
+  test('Register without Password', async ({ bugsFormPage }) => {
+    await bugsFormPage.fillRegistrationForm(registerUsers.noPassword);
+    await bugsFormPage.submit();
+    await bugsFormPage.verifyPasswordMissingErrorMessage();
+  });
 });

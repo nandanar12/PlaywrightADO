@@ -1,12 +1,12 @@
 import { Locator, Page } from '@playwright/test';
+import { BasePage } from '../base/base.page';
 
 // This class represents the home page and contains methods to navigate to the registration form.
-export class HomePage {
-    readonly page: Page;
+export class HomePage extends BasePage {
     readonly registrationForm: Locator;
 
     constructor(page: Page) {
-        this.page = page;
+        super(page);
         this.registrationForm = page.locator('#bugs-form');
     }
 
