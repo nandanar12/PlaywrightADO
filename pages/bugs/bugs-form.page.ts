@@ -24,9 +24,11 @@ export class BugsFormPage extends BasePage {
         this.headerText = page.locator('h2');
         // Locators for the registration form fields
         this.firstName = page.getByRole('textbox', { name: 'First Name' });
-        this.lastName = page.getByRole('textbox', { name: 'Last Name' });
-        this.phoneNumber = page.getByRole('textbox', { name: 'Phone nunber*' });
-        this.country = page.getByRole('combobox', { name: 'Country' });
+        // The challenge page has broken label `for` attributes, so these controls
+        // need stable ID-based locators instead of role/name lookups.
+        this.lastName = page.locator('#lastName');
+        this.phoneNumber = page.locator('#phone');
+        this.country = page.locator('#countries_dropdown_menu');
         this.emailAddress = page.locator('#emailAddress');
         this.password = page.locator('#password');
         this.termsAndConditions = page.locator('#exampleCheck1');
@@ -45,8 +47,7 @@ export class BugsFormPage extends BasePage {
         await this.firstName.fill(registerUser.firstName || '');
         await this.lastName.fill(registerUser.lastName);
         await this.phoneNumber.fill(registerUser.phoneNumber);
-        await this.country.click();
-        await this.country.selectOption(registerUser.country || '');
+        await this.country.selectOption({ label: registerUser.country || '' });
         await this.page.locator('body').click();
         await this.emailAddress.fill(registerUser.emailAddress);
         await this.password.fill(registerUser.password);
