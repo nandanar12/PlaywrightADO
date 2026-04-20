@@ -1,4 +1,4 @@
-import { Page, Locator, expect } from '@playwright/test';
+import { Page, Locator } from '@playwright/test';
 import { RegisterFormDTO } from '../../models/register-form.dto';
 import { getRegistrationDetails } from '../../utils/extract-user-registration-details';
 import { BasePage } from '../base/base.page';
@@ -37,9 +37,8 @@ export class BugsFormPage extends BasePage {
         this.registrationResponseMessage = page.locator('#message');
     }
 
-        async isRegistrationFormLoaded() {
+    async waitForRegistrationFormLoaded() {
         await this.page.waitForURL('**/bugs-form.html');
-        await expect(this.headerText).toHaveText('CHALLENGE - Spot the BUGS!');
     }
 
     //Fill the registration form with the provided user details
@@ -54,8 +53,8 @@ export class BugsFormPage extends BasePage {
     }
 
     // Check the terms and conditions checkbox
-    async checkTerms() {
-        await expect(this.termsAndConditions).toBeDisabled();
+    async isTermsDisabled() {
+        return this.termsAndConditions.isDisabled();
     }
 
     // Submit the registration form
@@ -64,35 +63,21 @@ export class BugsFormPage extends BasePage {
     }
 
     // Verify the registration response message
-    async verifySuccessMessage() {
-        await expect(this.registrationResponseMessage).toContainText('Successfully registered the following information');
-    }
-
-    // Verify the error messages for missing Email in the registration form
-    async verifyEmailMissingErrorMessage() {
-        await expect(this.registrationResponseMessage).toContainText('Email is required');
-    }
-
-    // Verify the error messages for missing Password in the registration form
-    async verifyPasswordMissingErrorMessage() {
-        await expect(this.registrationResponseMessage).toContainText('The password should contain between [6,20] characters!');
+    async getRegistrationResponseMessage() {
+        return this.registrationResponseMessage.innerText();
     }
 
     // Verify the registration response against the provided user details
-    async verifyRegistrationResponse(registerUser: RegisterFormDTO) {
+    async getRegistrationResponseDetails() {
 
         const response = await this.registrationResponse.innerText();
 
-        const actualFirstName = getRegistrationDetails(response, 'First Name');
-        const actualLastName = getRegistrationDetails(response, 'Last Name');
-        const actualPhoneNumber = getRegistrationDetails(response, 'Phone Number');
-        const actualCountry = getRegistrationDetails(response, 'Country');
-        const actualEmailAddress = getRegistrationDetails(response, 'Email');
-        expect.soft(actualFirstName).toBe(registerUser.firstName);
-        expect.soft(actualLastName).toBe(registerUser.lastName);
-        expect.soft(actualPhoneNumber).toBe(registerUser.phoneNumber);
-        expect.soft(actualCountry).toBe(registerUser.country);
-        expect.soft(actualEmailAddress).toBe(registerUser.emailAddress);
-
+        return {
+            firstName: getRegistrationDetails(response, 'First Name'),
+            lastName: getRegistrationDetails(response, 'Last Name'),
+            phoneNumber: getRegistrationDetails(response, 'Phone Number'),
+            country: getRegistrationDetails(response, 'Country'),
+            emailAddress: getRegistrationDetails(response, 'Email'),
+        };
     }
 }

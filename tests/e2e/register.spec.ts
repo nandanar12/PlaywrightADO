@@ -1,3 +1,4 @@
+import { expect } from '@playwright/test';
 import { test } from '../../fixtures/test-fixtures';
 import { registerUsers } from '../../test-data/bugs-form.data';
 
@@ -21,21 +22,27 @@ test.describe('User Registration Tests', () => {
   });
 
   test('Register with valid data', async ({ bugsFormPage }) => {
+    await bugsFormPage.waitForRegistrationFormLoaded();
+    await expect(bugsFormPage.headerText).toHaveText('CHALLENGE - Spot the BUGS!');
     await bugsFormPage.fillRegistrationForm(registerUsers.validUser);
-    await bugsFormPage.checkTerms();
+    await expect(bugsFormPage.termsAndConditions).toBeDisabled();
     await bugsFormPage.submit();
-    await bugsFormPage.verifySuccessMessage();
+    await expect(bugsFormPage.registrationResponseMessage).toContainText('Successfully registered the following information');
   });
 
   test('Register without Email', async ({ bugsFormPage }) => {
+    await bugsFormPage.waitForRegistrationFormLoaded();
+    await expect(bugsFormPage.headerText).toHaveText('CHALLENGE - Spot the BUGS!');
     await bugsFormPage.fillRegistrationForm(registerUsers.noEmail);
     await bugsFormPage.submit();
-    await bugsFormPage.verifyEmailMissingErrorMessage();
+    await expect(bugsFormPage.registrationResponseMessage).toContainText('Email is required');
   });
 
   test('Register without Password', async ({ bugsFormPage }) => {
+    await bugsFormPage.waitForRegistrationFormLoaded();
+    await expect(bugsFormPage.headerText).toHaveText('CHALLENGE - Spot the BUGS!');
     await bugsFormPage.fillRegistrationForm(registerUsers.noPassword);
     await bugsFormPage.submit();
-    await bugsFormPage.verifyPasswordMissingErrorMessage();
+    await expect(bugsFormPage.registrationResponseMessage).toContainText('The password should contain between [6,20] characters!');
   });
 });
