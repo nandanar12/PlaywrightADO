@@ -82,6 +82,27 @@ Reports and results:
 
 The Azure Pipeline expects `BASE_URL` to be supplied as a pipeline variable.
 
+# Azure DevOps
+The Azure DevOps remote is configured as `ado`:
+
+```powershell
+git remote add ado "https://mgramachandran1@dev.azure.com/mgramachandran1/QA%20Practice/_git/PlaywrightADO"
+```
+
+After committing local changes, push to Azure DevOps with:
+
+```powershell
+git push ado main
+```
+
+The pipeline trigger is configured for `main` in `azure-pipelines.yml`, so pushing to `ado/main` starts the Azure DevOps pipeline when the pipeline is connected to this repository.
+
+To keep GitHub in sync as well, push the same branch to `origin`:
+
+```powershell
+git push origin main
+```
+
 # Contribute
 Contributions should keep the page object model, fixtures, and test data structure consistent with the existing framework. Add or update tests under `test/specs/`, page interactions under `business/pages/`, actions under `business/actions/`, fixtures under `business/fixtures/`, reusable utilities under `core/utils/`, and reusable data under environment folders such as `test/data/uat/`.
 
