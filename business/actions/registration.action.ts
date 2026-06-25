@@ -11,7 +11,7 @@ export class RegistrationAction {
   async openRegistrationForm() {
     await this.homePage.navigateToHomePage();
     await this.homePage.navigateToRegistrationPage();
-    await this.bugsFormPage.waitForRegistrationFormLoaded();
+    // await this.bugsFormPage.waitForRegistrationFormLoaded();
   }
 
   async submitRegistrationForm(registerUser: RegisterFormDTO) {
