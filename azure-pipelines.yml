@@ -2,7 +2,7 @@ trigger:
 - main
 
 pool:
-  name: 'self-hosted-linux'
+  vmImage: 'ubuntu-latest'
 
 steps:
 - script: node -v
