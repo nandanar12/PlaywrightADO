@@ -1,4 +1,4 @@
-import { RegisterFormDTO } from '../models/register-form.dto';
+import { RegisterFormDTO } from '../model/register-form.dto';
 
 export const registerUsers: { [key: string]: RegisterFormDTO } = {
     // Valid user data

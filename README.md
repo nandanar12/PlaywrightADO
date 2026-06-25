@@ -1,18 +1,89 @@
-# Introduction 
-TODO: Give a short introduction of your project. Let this section explain the objectives or the motivation behind this project. 
+# Introduction
+This project is a Playwright-based end-to-end test automation framework for validating registration functionality on the QA Practice "Spot the Bugs" page:
+
+https://qa-practice.netlify.app/bugs-form
 
 # Getting Started
-TODO: Guide users through getting your code up and running on their own system. In this section you can talk about:
-1.	Installation process
-2.	Software dependencies
-3.	Latest releases
-4.	API references
+1. Clone the repo.
+2. Install Node.js 18 or later.
+3. Install project dependencies:
+
+```powershell
+npm install
+```
+
+If PowerShell blocks npm/npx scripts, use the Windows command shims:
+
+```powershell
+npm.cmd install
+```
+
+4. Create a local `.env` file under `core/environments/` with:
+
+```text
+BASE_URL=https://qa-practice.netlify.app/bugs-form
+```
+
+The `core/environments/.env` file is ignored by git and is loaded locally through `dotenv`.
+
+5. Browser setup:
+
+This project is configured to run tests against installed Google Chrome and Microsoft Edge:
+
+- Google Chrome: `channel: 'chrome'`
+- Microsoft Edge: `channel: 'msedge'`
+
+This avoids relying on the Playwright-managed Chromium download under `%USERPROFILE%\AppData\Local\ms-playwright`, which can be unreliable on some Windows on ARM / Snapdragon machines.
+
+Make sure Google Chrome and/or Microsoft Edge are installed before running tests.
 
 # Build and Test
-TODO: Describe and show how to build your code and run the tests. 
+Run all tests:
+
+```powershell
+npx.cmd playwright test
+```
+
+Run only Google Chrome:
+
+```powershell
+npx.cmd playwright test --project="Google Chrome"
+```
+
+Run only Microsoft Edge:
+
+```powershell
+npx.cmd playwright test --project="Microsoft Edge"
+```
+
+Run a single test by title:
+
+```powershell
+npx.cmd playwright test -g "Register with valid data" --project="Google Chrome"
+```
+
+Run a single test in headed mode:
+
+```powershell
+npx.cmd playwright test -g "Register with valid data" --project="Google Chrome" --headed
+```
+
+List discovered tests without running them:
+
+```powershell
+npx.cmd playwright test --list
+```
+
+Reports and results:
+
+- HTML report: `playwright-report/`
+- Test results: `test-results/`
+- JUnit report for Azure DevOps: `test-results/results.xml`
+
+The Azure Pipeline expects `BASE_URL` to be supplied as a pipeline variable.
 
 # Contribute
-TODO: Explain how other users and developers can contribute to make your code better. 
+Contributions should keep the page object model, fixtures, and test data structure consistent with the existing framework. Add or update tests under `test/specs/`, page interactions under `business/pages/`, actions under `business/actions/`, fixtures under `business/fixtures/`, reusable utilities under `core/utils/`, and reusable data under environment folders such as `test/data/uat/`.
 
 If you want to learn more about creating good readme files then refer the following [guidelines](https://docs.microsoft.com/en-us/azure/devops/repos/git/create-a-readme?view=azure-devops). You can also seek inspiration from the below readme files:
 - [ASP.NET Core](https://github.com/aspnet/Home)

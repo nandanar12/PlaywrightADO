@@ -1,12 +1,12 @@
 import { defineConfig, devices } from '@playwright/test';
 import * as dotenv from 'dotenv';
 
-dotenv.config();
+dotenv.config({ path: 'core/environments/.env' });
 
 const isCI = !!process.env.CI;
 
 export default defineConfig({
-  testDir: './tests',
+  testDir: './test',
 
   workers: isCI ? 2 : 4,
   retries: isCI ? 1 : 0,
@@ -29,8 +29,12 @@ export default defineConfig({
 
   projects: [
     {
-      name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
+      name: 'Google Chrome',
+      use: { ...devices['Desktop Chrome'], channel: 'chrome' },
+    },
+    {
+      name: 'Microsoft Edge',
+      use: { ...devices['Desktop Edge'], channel: 'msedge' },
     },
   ],
 
