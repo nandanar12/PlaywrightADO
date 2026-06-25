@@ -11,8 +11,8 @@ steps:
 - script: npm ci
   displayName: 'Install dependencies'
 
-- script: npx playwright install
-  displayName: 'Install browsers'
+- script: npx playwright install --with-deps chrome msedge
+  displayName: 'Install Chrome and Edge browsers'
 
 - script: npx playwright test
   displayName: 'Run tests'
